@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间  用于区分不同xml文件中的id
+一般使用包名+类名-->
+<mapper namespace="com.longyuan.www.mapper.DeptMapper">
+	<!--将从数据库表中查询的数据映射到对应的实体类中 
+	id随意写，要和下面的resultMap的值保持一致
+	type：具体的返回类型 -->
+	<resultMap type="Dept" id="Dept">
+		<id property="deptNo" column="deptno"/>
+		<result property="deptName" column="deptname"/>
+		<result property="deptLoc" column="deptloc"/>
+		<result property="deptLeader" column="deptleader"/>
+	</resultMap>
+	
+	<!-- id随意命名，必须保证在同一个xml中唯一 
+	如果sql需要用到传入参数 parameterType
+	此处传Dept，包名+类名
+	#{}是占位符的意思-->
+	<insert id="addDept" parameterType="Dept">
+		insert into t_dept(deptno,deptname,deptloc,deptleader) values(#{deptNo},#{deptName},#{deptLoc},#{deptLeader})
+	</insert>
+	
+	<delete id="deleteDeptByNo" parameterType="String">
+		delete from t_dept where deptno = #{deptNo}
+	</delete>
+	
+	<update id="updateDeptLeaderByNo" parameterType="Map">
+		update t_dept set deptleader = #{deptLeader} where deptno = #{deptNo}
+	</update>
+	
+	<!--parameterType表示传参
+	resultMap表示返回类型  -->
+	<select id="queryDeptByNo" parameterType="String" resultMap="Dept">
+		select deptno,deptname,deptloc,deptleader from t_dept where deptno = #{deptNo}
+	</select>
+	
+	<select id="queryCount" resultType="int">
+		select count(*) from t_dept
+	</select>
+	
+	<select id="queryAllByDeptNameAndDeptLeader" parameterType="Map" resultMap="Dept">
+		select deptno,deptname,deptloc,deptleader from t_dept where 1 = 1
+		<if test="deptName != null">
+			and deptname like #{deptName}
+		</if>
+		<if test="deptLeader != null">
+			and deptleader like #{deptLeader}
+		</if>
+	</select>
+	
+	<select id="queryAllDept" resultMap="Dept">
+		select deptno,deptname,deptloc,deptleader from t_dept
+	</select>
+</mapper>

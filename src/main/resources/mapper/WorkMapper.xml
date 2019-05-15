@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间  用于区分不同xml文件中的id
+一般使用包名+类名-->
+<mapper namespace="com.longyuan.www.mapper.WorkMapper">
+	<!--将从数据库表中查询的数据映射到对应的实体类中 
+	id随意写，要和下面的resultMap的值保持一致
+	type：具体的返回类型 -->
+	<resultMap type="Work" id="Work">
+		<id property="id" column="id"/>
+		<result property="workName" column="workName"/>
+		<result property="workAdress" column="workAdress"/>
+		<result property="createTime" column="createTime"/>
+	</resultMap>
+	
+	<!-- id随意命名，必须保证在同一个xml中唯一 
+	如果sql需要用到传入参数 parameterType
+	此处传Dept，包名+类名
+	#{}是占位符的意思-->
+	<insert id="addWork" parameterType="Work">
+		insert into db_work(id,workName,workAdress,createTime) values(#{id},#{workName},#{workAdress},now())
+	</insert>
+	
+	<delete id="deleteWorkById" parameterType="int">
+		delete from db_work where id = #{id}
+	</delete>
+	
+	<update id="updateWorkById" parameterType="Map">
+		update db_work
+		set workName = #{workName},workAdress = #{workAdress},createTime = now()
+		where id = #{id}
+	</update>
+	
+	<!--parameterType表示传参
+	resultMap表示返回类型  -->
+	<select id="queryWorkById" parameterType="int" resultMap="Work">
+		select id,workName,workAdress,createTime from db_work where id = #{id}
+	</select>
+	
+	<select id="queryAllWork" resultMap="Work">
+		select id,workName,workAdress,createTime from db_work
+	</select>
+</mapper>
