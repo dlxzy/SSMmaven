@@ -8,12 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>初始页面</title>
 </head>
 <body>
 
-	<h1>Hello!</h1>
-	《----------------------------------》
+	<h1>Hello,Jenkins</h1>
+	<h2>Hello World ,My GitHub!</h2>
 
 </body>
 </html>
